@@ -1,0 +1,19 @@
+{
+    "name": "bugloos/custom-framework",
+    "description": "Custom Framework for bugloos",
+    "type": "framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mahmood bazdar",
+            "email": "mahmood.bazdar@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
