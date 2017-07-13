@@ -16,15 +16,32 @@ class Router
 
     public static function get($path, $handler)
     {
+       self::addRoute($path,$handler,"GET");
+    }
+    public static function post($path,$handler){
+       self::addRoute($path,$handler,"POST");
+    }
+    public static function put($path,$handler){
+        self::addRoute($path,$handler,"PUT");
+    }
+    public static function patch($path,$handler){
+        self::addRoute($path,$handler,"PATCH");
+    }
+    public static function delete($path,$handler){
+        self::addRoute($path,$handler,"DELETE");
+    }
+
+    private static function addRoute($path, $handler,$method){
         $handlers = explode("@", $handler);
         $controller = $handlers[1];
-        $method = $handlers[0];
+        $function = $handlers[0];
         if (class_exists(self::NAMESPACE_PREFIX.$controller)) {
-            if (method_exists(self::NAMESPACE_PREFIX.$controller, $method)) {
+            if (method_exists(self::NAMESPACE_PREFIX.$controller, $function)) {
                 self::$pathes[] = [
                   "controller" => self::NAMESPACE_PREFIX.$controller,
-                  "method" => $method,
+                  "function" => $function,
                   "path" => $path,
+                  "method"=>$method
                 ];
             } else {
                 throw new \InvalidArgumentException(sprintf("Route %s method dose not exist.",
@@ -35,13 +52,12 @@ class Router
               $path));
         }
     }
-
     public static function decide(){
         $uri=$_SERVER["REQUEST_URI"];
         foreach (self::$pathes as $path){
-            if($path["path"]===$uri){
+            if($path["path"]===$uri && $_SERVER["REQUEST_METHOD"]===$path["method"]){
                 $controllerObject=new $path["controller"]();
-                $controllerObject->{$path["method"]}();
+                $controllerObject->{$path["function"]}();
             }
         }
     }
