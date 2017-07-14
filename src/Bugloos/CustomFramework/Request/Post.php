@@ -18,7 +18,7 @@ class Post
     }
 
 
-    public function get($key,$default){
+    public function get($key,$default=null){
         if(isset($this->post[$key])){
             return $this->post[$key];
         }

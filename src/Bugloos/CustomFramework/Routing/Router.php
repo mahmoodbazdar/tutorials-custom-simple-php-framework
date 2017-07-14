@@ -4,6 +4,9 @@
 namespace Bugloos\CustomFramework\Routing;
 
 
+use Bugloos\CustomFramework\Request\Post;
+use Bugloos\CustomFramework\Request\Request;
+
 class Router
 {
     const NAMESPACE_PREFIX = 'Bugloos\\CustomFramework\\Controllers\\';
@@ -54,12 +57,34 @@ class Router
     }
     public static function decide(){
         $uri=$_SERVER["REQUEST_URI"];
+        $request=new Request($_GET,$_POST);
         foreach (self::$pathes as $path){
             if($path["path"]===$uri && $_SERVER["REQUEST_METHOD"]===$path["method"]){
                 $controllerObject=new $path["controller"]();
-                $controllerObject->{$path["function"]}();
+                $index=self::hasRequest($controllerObject,$path["function"]);
+                if($index!==-1){
+                    if($index==0){
+                        $controllerObject->{$path["function"]}($request);
+                    }
+                }
+                else{
+                    $controllerObject->{$path["function"]}();
+                }
             }
         }
+    }
+
+    private static function hasRequest($obj,$method){
+        $rm=new \ReflectionMethod(get_class($obj),$method);
+        $index=-1;
+        $exist=false;
+        foreach($rm->getParameters() as $parameter){
+            $index++;
+            if($parameter->getClass()->getName() === Request::class){
+                $exist=$index;
+            }
+        }
+        return $exist!==false?$exist:-1;
     }
 }
 
