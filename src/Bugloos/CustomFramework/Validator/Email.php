@@ -1,36 +1,42 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mahmood
- * Date: 7/14/17
- * Time: 3:16 PM
- */
+
 
 namespace Bugloos\CustomFramework\Validator;
 
 
-class Email implements Validator
+class Email extends Validator
 {
     /**
      * @var string
      */
-    private $message;
+    private $message = "Email is not valid";
 
     /**
      * Email constructor.
      * @param $message
      */
-    function __construct($message)
+    function __construct($message = null)
     {
-        $this->message=$message;
+        if (!is_null($message)) {
+            $this->message = $message;
+        }
     }
 
     /**
-     * @param mixed $data
+     * @param string $data
      * @return boolean
      */
     public function isValid($data)
     {
-        // TODO: Implement isValid() method.
+        if (filter_var($data,FILTER_VALIDATE_EMAIL)) {
+            return true;
+        } else {
+            $this->errorMessages[] = new ValidationError("email",
+              $this->message);
+
+            return false;
+        }
     }
+
+
 }

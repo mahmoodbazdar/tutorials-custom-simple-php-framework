@@ -6,6 +6,7 @@ namespace Bugloos\CustomFramework\Controllers;
 
 use Bugloos\CustomFramework\Helper\View;
 use Bugloos\CustomFramework\Request\Request;
+use Bugloos\CustomFramework\Validator\Assert;
 use Bugloos\CustomFramework\Validator\Email;
 use Bugloos\CustomFramework\Validator\Length;
 
@@ -24,10 +25,15 @@ class ContactController
         $validators = [
           "email" => [
             new Email("Email is wrong"),
-            new Length(null, 255)
+            new Length(10, 255)
           ],
+          "name" => [
+            new Length(10,20)
+          ]
         ];
 
+        $messages=Assert::isValid($request->post->all(),$validators);
+        print_r($messages);
     }
 }
 

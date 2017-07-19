@@ -24,4 +24,8 @@ class Post
         }
         return $default;
     }
+
+    public function all(){
+        return $this->post;
+    }
 }
