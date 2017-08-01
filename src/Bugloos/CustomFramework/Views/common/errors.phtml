@@ -1,0 +1,18 @@
+<?php
+if($flashMessages=\Bugloos\CustomFramework\Helper\FlashMessages::get()) {
+    foreach ($flashMessages as $name => $messages):
+
+        ?>
+        <div class="alert alert-danger" role="alert">
+            <h4><?= $name ?></h4>
+            <ul>
+                <?php foreach ($messages as $message): ?>
+                    <?php foreach ($message as $item):; ?>
+                        <li><?= $item->message ?></li>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endforeach;
+
+}?>

@@ -4,6 +4,7 @@
 namespace Bugloos\CustomFramework\Controllers;
 
 
+use Bugloos\CustomFramework\Helper\FlashMessages;
 use Bugloos\CustomFramework\Helper\View;
 use Bugloos\CustomFramework\Request\Request;
 use Bugloos\CustomFramework\Validator\Assert;
@@ -33,6 +34,11 @@ class ContactController
         ];
 
         $messages=Assert::isValid($request->post->all(),$validators);
+        if(sizeof($messages)>0){
+            FlashMessages::set($messages);
+            header("Location: /contact");
+            die;
+        }
         print_r($messages);
     }
 }

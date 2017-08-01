@@ -9,7 +9,7 @@
 namespace Bugloos\CustomFramework\Validator;
 
 
-class ValidationError
+class ValidationError implements \JsonSerializable
 {
     /**
      * @var string
@@ -64,4 +64,15 @@ class ValidationError
         $this->message = $message;
     }
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

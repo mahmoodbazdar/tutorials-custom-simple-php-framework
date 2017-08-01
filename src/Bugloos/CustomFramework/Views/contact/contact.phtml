@@ -1,5 +1,6 @@
 <?=\Bugloos\CustomFramework\Helper\View::render("common/header",["title"=>"contact"])?>
 <div class="container">
+    <?=\Bugloos\CustomFramework\Helper\View::render("common/errors",[])?>
     <div class="row">
         <div class="col-md-8">
             <form method="post" action="/contact" novalidate>
